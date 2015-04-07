@@ -35,8 +35,11 @@ saveLit :: String -> DDPPXP -> Maybe DDPPXP
 saveLit s (a,m) = if (length lst) > 0 then return (unwords $ tail lst, M.insert s (head lst) m) else Nothing
 	where lst = words a
 
+saveLitToNL :: String -> DDPPXP -> Maybe DDPPXP
+saveLitToNL s (a,m) = return ("", M.insert s (a) m)
+
 parse :: String -> Maybe DDPPXP
-parse s = return (s, M.empty)  >>= saveLit "A" >>= skipLit "say " >>= saveLit "X"
+parse s = return (s, M.empty)  >>= saveLit "A" >>= skipLit "say " >>= saveLitToNL "X"
 
 mkresponse :: DDPPXP -> String
 mkresponse (_, m) = a ++ ": " ++ x ++ " " ++ x
